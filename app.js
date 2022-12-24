@@ -3,40 +3,37 @@ let food_Item = document.querySelector(".food_item");
 
 food_Item.addEventListener("click", getFood);
 
-btnClick.addEventListener("click", () => {
+btnClick.addEventListener('click', ()=>{
   const userInput = document.querySelector(".userInp").value.trim();
-  if ((userInput = "")) {
-    food_Item.innerHTML = "Please Enter A Valid Meal";
-  } else {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${userInput}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        let foodMeals = "";
-        if (data.meals) {
-          data.meals.forEach((meals) => {
-            foodMeals += `
-            <div class="food" data-id=${meals.idMeal}>
-            <div class="">
-             <img src=${meals.strMealThumb} class="img_item">
-            </div>
-             <div class="food_details">
-                 <h2>${meals.strMeal}</h2>
-                 <a href="#" class="btn_recipe">View Recipe</a>
-             </div>
-         </div>
-            `;
-          });
-        } else {
-          food_Item.innerHTML = "Sorry We Couldn't Fetch Your MEal";
-        }
-        food_Item.innerHTML = foodMeals;
-      })
-      .catch((err) => {
-        console.log(err.message);
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${userInput}`)
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    let foodMeals = ""
+    if (data.meals) {
+      data.meals.forEach((meals) => {
+        foodMeals += `
+          <div class="food" data-id=${meals.idMeal}>
+          <div class="">
+           <img src=${meals.strMealThumb} class="img_item">
+          </div>
+           <div class="food_details">
+               <h2>${meals.strMeal}</h2>
+               <a href="#" class="btn_recipe">View Recipe</a>
+           </div>
+       </div>
+          `;
       });
-  }
-});
+    }
+    else{
+      food_Item.innerHTML = "Sorry We Couldn't Fetch Your Meal"
+    }
+    food_Item.innerHTML = foodMeals
+  })
+  .catch(err =>{
+    console.log(err.message);
+  })
+})
 
 function getFood(e) {
   e.preventDefault();
@@ -56,18 +53,19 @@ const modalPreview = document.querySelector(".modal_preview");
 
 function fetchMealDetails(meal) {
   let mealMenu = meal[0];
+  
+  
+  let count = 1
+  let ingredients = []
 
-  let count = 1;
-  let ingredients = [];
-
-  for (let i in mealMenu) {
-    let ingredient = "";
-    let measure = "";
+  for(let i in mealMenu){
+    let ingredient = ''
+    let measure = ''
     if (i.startsWith("strIngredient") && mealMenu[i]) {
-      ingredient = mealMenu[i];
-      measure = mealMenu["strMeasure" + count];
-      count += 1;
-      ingredients.push(`${measure} ${ingredient}`);
+      ingredient = mealMenu[i]
+      measure = mealMenu["strMeasure" + count]
+      count += 1
+      ingredients.push(`${measure} ${ingredient}` )
     }
   }
 
@@ -87,24 +85,29 @@ function fetchMealDetails(meal) {
                         
                        
                     </div>
-    `;
+    `
+
+
 
   modalPreview.innerHTML = html;
   showModal.classList.add("show_modal");
-  const list_ing = document.querySelector(".list_ing");
-
-  let ul = document.createElement("ul");
+  const list_ing = document.querySelector('.list_ing')
+    
+  let ul = document.createElement('ul')
   console.log(ingredients);
-  ingredients.forEach((item) => {
-    li = document.createElement("li");
-    li.innerText = item;
-    ul.appendChild(li);
-    list_ing.appendChild(ul);
-  });
+  ingredients.forEach((item)=> {
+
+  li = document.createElement('li')
+  li.innerText = item
+  ul.appendChild(li)
+  list_ing.appendChild(ul)
+  })
+
 }
 
-const closeImg = document.querySelector(".close_img");
+const closeImg = document.querySelector('.close_img')
 
-closeImg.addEventListener("click", () => {
-  showModal.classList.remove("show_modal");
-});
+closeImg.addEventListener('click', ()=>{
+    showModal.classList.remove("show_modal");
+    
+})
