@@ -111,6 +111,11 @@ body {
     text-align: center;
 }
 
+.food_details h2{
+    color: white;
+    margin-bottom: .75em;
+}
+
 .btn_recipe {
     padding: .5em 1em;
     font-size: 1.2rem;
